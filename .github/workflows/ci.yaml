@@ -16,7 +16,7 @@ jobs:
       - name: Update deployment replicas
         run: |
           # 随便改个值模拟更新，这里直接把 replicas 改为 2
-          sed -i 's/replicas: 1/replicas: 2/' app/deployment.yaml
+          sed -i 's/replicas: 1/replicas: 3/' app/deployment.yaml
 
       - name: Commit & Push
         run: |
