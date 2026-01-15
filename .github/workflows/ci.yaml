@@ -1,0 +1,29 @@
+name: CI → GitOps
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  update-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Update deployment replicas
+        run: |
+          # 随便改个值模拟更新，这里直接把 replicas 改为 2
+          sed -i 's/replicas: 1/replicas: 2/' app/deployment.yaml
+
+      - name: Commit & Push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add app/deployment.yaml
+          git commit -m "CI: bump replicas to 2" || echo "No changes"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
